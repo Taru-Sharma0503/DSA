@@ -13,7 +13,7 @@ class Solution {
             return;
         }
 
-        if (num > n)
+        if (num > n || n - num + 1 < k - curr.size())
             return;
 
         curr.add(num);
