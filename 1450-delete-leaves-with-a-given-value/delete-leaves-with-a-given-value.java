@@ -24,10 +24,6 @@ class Solution {
         if (node == null)
             return null;
 
-        if (node.val == target && node.left == null && node.right == null) {
-            return null;
-        }
-
         node.left = deleteNode(node.left, target);
         node.right = deleteNode(node.right, target);
 
