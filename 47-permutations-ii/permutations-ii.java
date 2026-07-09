@@ -27,7 +27,6 @@ class Solution {
             temp.add(nums[i]);
             findPermutation(nums, temp);
             temp.remove(temp.size() - 1);
-            findPermutation(nums, temp);
             used[i] = false;
         }
     }
