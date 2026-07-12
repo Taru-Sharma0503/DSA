@@ -4,7 +4,6 @@ class Solution {
         Arrays.sort(sorted);
         int n = arr.length, rnk = 1, right = 1;
         HashMap<Integer, Integer> map = new HashMap<>();
-        int rank[] = new int[n];
 
         if (n == 0)
             return arr;
@@ -22,9 +21,9 @@ class Solution {
         }
 
         for (int i = 0; i < n; i++) {
-            rank[i] = map.get(arr[i]);
+            arr[i] = map.get(arr[i]);
         }
 
-        return rank;
+        return arr;
     }
 }
