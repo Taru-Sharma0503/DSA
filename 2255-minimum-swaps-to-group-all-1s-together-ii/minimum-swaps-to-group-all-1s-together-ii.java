@@ -19,7 +19,6 @@ class Solution {
                 if (nums[left % n] == 0)
                     count0--;
                 left++;
-                ;
             }
 
             right++;
