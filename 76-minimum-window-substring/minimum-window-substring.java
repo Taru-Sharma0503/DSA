@@ -1,28 +1,40 @@
 class Solution {
     public String minWindow(String s, String t) {
-        int m = s.length(), n = t.length(), left = 0, right = 0, leftIdx = -1, rightIdx = -1;
+        int m = s.length(), n = t.length(), left = 0, right = 0, leftIdx = -1, rightIdx = -1, required = 0, formed = 0;
 
         HashMap<Character, Integer> fMap = new HashMap<>();
         HashMap<Character, Integer> sMap = new HashMap<>();
 
-        for (char ch : t.toCharArray())
+        for (char ch : t.toCharArray()) {
+            if (!sMap.containsKey(ch))
+                required++;
             sMap.put(ch, sMap.getOrDefault(ch, 0) + 1);
+        }
 
         while (right < m) {
             char ch = s.charAt(right);
 
             fMap.put(ch, fMap.getOrDefault(ch, 0) + 1);
+
+            if (sMap.containsKey(ch) && fMap.get(ch).intValue() == sMap.get(ch).intValue())
+                formed++;
+
             if (right - left + 1 < n) {
                 right++;
                 continue;
             }
 
-            while (isValid(fMap, sMap)) {
-                if(leftIdx==-1 || right-left+1 < rightIdx-leftIdx+1){
-                leftIdx = left;
-                rightIdx = right;
+            while (formed == required) {
+                if (leftIdx == -1 || right - left + 1 < rightIdx - leftIdx + 1) {
+                    leftIdx = left;
+                    rightIdx = right;
                 }
                 char leftCh = s.charAt(left);
+
+                if (sMap.containsKey(leftCh)
+                        && fMap.get(leftCh).intValue() == sMap.get(leftCh).intValue())
+                    formed--;
+
                 fMap.put(leftCh, fMap.get(leftCh) - 1);
                 left++;
             }
@@ -34,15 +46,5 @@ class Solution {
             return "";
 
         return s.substring(leftIdx, rightIdx + 1);
-    }
-
-    public boolean isValid(HashMap<Character, Integer> fMap, HashMap<Character, Integer> sMap) {
-
-        for (char ch : sMap.keySet()) {
-            if (!fMap.containsKey(ch) || sMap.get(ch) > fMap.get(ch))
-                return false;
-        }
-
-        return true;
     }
 }
