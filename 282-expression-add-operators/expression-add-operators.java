@@ -2,49 +2,57 @@ class Solution {
     List<String> ans = new ArrayList<>();
 
     public List<String> addOperators(String num, int target) {
-        dfs(num, target, "", 0, 0, 0);
+        dfs(num, target, new StringBuilder(), 0, 0, 0);
         return ans;
     }
 
-    public void dfs(String num, int target, String exp, long curr, long last, int index) {
+    public void dfs(String num, int target, StringBuilder exp,
+                    long curr, long last, int index) {
 
         if (index == num.length()) {
             if (curr == target)
-                ans.add(exp);
+                ans.add(exp.toString());
             return;
         }
 
         for (int i = index; i < num.length(); i++) {
 
-            if (i != index && num.charAt(index) == '0')
+            if (i > index && num.charAt(index) == '0')
                 break;
 
-            long digit = Long.parseLong(num.substring(index, i + 1));
+            String operand = num.substring(index, i + 1);
+            long digit = Long.parseLong(operand);
+
+            int len = exp.length();
 
             if (index == 0) {
-                dfs(num, target,
-                        exp + digit,
-                        digit,
-                        digit,
-                        i + 1);
+
+                exp.append(operand);
+                dfs(num, target, exp, digit, digit, i + 1);
+                exp.setLength(len);
+
             } else {
-                dfs(num, target,
-                        exp + "+" + digit,
+
+                exp.append("+").append(operand);
+                dfs(num, target, exp,
                         curr + digit,
                         digit,
                         i + 1);
+                exp.setLength(len);
 
-                dfs(num, target,
-                        exp + "-" + digit,
+                exp.append("-").append(operand);
+                dfs(num, target, exp,
                         curr - digit,
                         -digit,
                         i + 1);
+                exp.setLength(len);
 
-                dfs(num, target,
-                        exp + "*" + digit,
+                exp.append("*").append(operand);
+                dfs(num, target, exp,
                         curr - last + last * digit,
                         last * digit,
                         i + 1);
+                exp.setLength(len);
             }
         }
     }
