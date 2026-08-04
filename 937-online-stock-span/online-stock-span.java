@@ -1,27 +1,26 @@
 class StockSpanner {
-    int stack[][];
+    int[] price;
+    int[] span;
     int top;
 
     public StockSpanner() {
-        stack = new int[10001][2];
+        price = new int[10001];
+        span = new int[10001];
         top = -1;
     }
 
-    public int next(int price) {
-        int ans = 1;
-        int currTop = top;
-        while (currTop >= 0 && stack[currTop][0] <= price) {
-            ans += stack[currTop][1];
-            currTop -= stack[currTop][1];
+    public int next(int currPrice) {
+        int currSpan = 1;
+
+        while (top >= 0 && price[top] <= currPrice) {
+            currSpan += span[top];
+            top--;
         }
-        stack[++top][0] = price;
-        stack[top][1] = ans;
-        return ans;
+
+        top++;
+        price[top] = currPrice;
+        span[top] = currSpan;
+
+        return currSpan;
     }
 }
-
-/**
- * Your StockSpanner object will be instantiated and called as such:
- * StockSpanner obj = new StockSpanner();
- * int param_1 = obj.next(price);
- */
