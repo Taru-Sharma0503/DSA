@@ -14,7 +14,8 @@ class StockSpanner {
             ans += stack[currTop][1];
             currTop -= stack[currTop][1];
         }
-        stack[++top] = new int[] { price, ans };
+        stack[++top][0] = price;
+        stack[top][1] = ans;
         return ans;
     }
 }
