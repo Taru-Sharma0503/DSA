@@ -1,19 +1,25 @@
 class Solution {
 
+    HashMap<Integer, Integer> map = new HashMap<>();
+
     public TreeNode buildTree(int[] inorder, int[] postorder) {
+
+        for (int i = 0; i < inorder.length; i++)
+            map.put(inorder[i], i);
+
         return buildTree(inorder, 0, inorder.length - 1,
                 postorder, 0, postorder.length - 1);
     }
 
     public TreeNode buildTree(int[] inorder, int inStart, int inEnd,
-            int[] postorder, int postStart, int postEnd) {
+                              int[] postorder, int postStart, int postEnd) {
 
         if (inStart > inEnd)
             return null;
 
         TreeNode root = new TreeNode(postorder[postEnd]);
 
-        int idx = findIdx(root.val, inorder);
+        int idx = map.get(root.val);
 
         int leftSize = idx - inStart;
 
@@ -26,13 +32,5 @@ class Solution {
                 postorder, postStart + leftSize, postEnd - 1);
 
         return root;
-    }
-
-    public int findIdx(int val, int arr[]) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == val)
-                return i;
-        }
-        return -1;
     }
 }
