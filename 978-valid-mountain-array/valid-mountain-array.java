@@ -1,6 +1,6 @@
 class Solution {
     public boolean validMountainArray(int[] arr) {
-        int n = arr.length,flag=0;
+        int n = arr.length;
         boolean increasing = true;
 
         if (n < 3 || arr[0]>arr[1])
@@ -11,14 +11,13 @@ class Solution {
                 continue;
 
             if (increasing && arr[i] > arr[i + 1]){
-                flag=1;
                 increasing = false;
             }
             else
                 return false;
         }
 
-        if(flag==1)
+        if(!increasing)
             return true;
         return false;
     }
