@@ -1,6 +1,6 @@
 class Solution {
     public int largestInteger(int[] nums, int k) {
-        int n = nums.length, ans = -1;
+        int n = nums.length;
         int freq[] = new int[51];
         HashSet<Integer> set;
 
@@ -13,11 +13,11 @@ class Solution {
             }
         }
 
-        for (int i = 0; i < 51; i++) {
+        for (int i = 50; i >=0; i--) {
             if (freq[i] == 1)
-                ans = i;
+                return i;
         }
 
-        return ans;
+        return -1;
     }
 }
