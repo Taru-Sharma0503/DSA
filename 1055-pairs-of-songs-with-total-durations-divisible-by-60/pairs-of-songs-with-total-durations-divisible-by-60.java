@@ -4,11 +4,9 @@ class Solution {
         HashMap<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < n; i++) {
-            int r=time[i]%60;
-            if(map.containsKey((60-r)%60))
-                ans+=map.get((60-r)%60);
-
-            map.put(r,map.getOrDefault(r,0)+1);
+            int r = time[i] % 60;
+            ans += map.getOrDefault((60 - r) % 60, 0);
+            map.put(r, map.getOrDefault(r, 0) + 1);
         }
 
         return ans;
