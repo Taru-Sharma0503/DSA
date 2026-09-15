@@ -3,39 +3,21 @@ class Solution {
         if (head == null)
             return null;
 
-        ArrayList<Integer> list = new ArrayList<>();
+        ListNode middleNode = midNode(head);
+        TreeNode root = new TreeNode(middleNode.val);
 
-        while (head != null) {
-            list.add(head.val);
-            head = head.next;
-        }
-
-        TreeNode root = null;
-        return build(list, 0, list.size() - 1, root);
-    }
-
-    public TreeNode build(ArrayList<Integer> list, int low, int high, TreeNode root) {
-        if (low > high)
+        if (head == middleNode)
             return root;
 
-        int mid = low + (high - low) / 2;
+        ListNode temp = head;
 
-        root = insert(list.get(mid), root);
+        while (temp.next != middleNode)
+            temp = temp.next;
 
-        root = build(list, low, mid - 1, root);
-        root = build(list, mid + 1, high, root);
+        temp.next = null;
 
-        return root;
-    }
-
-    public TreeNode insert(int val, TreeNode root) {
-        if (root == null)
-            return new TreeNode(val);
-
-        if (val < root.val)
-            root.left = insert(val, root.left);
-        else if (val > root.val)
-            root.right = insert(val, root.right);
+        root.left = sortedListToBST(head);
+        root.right = sortedListToBST(middleNode.next);
 
         return root;
     }
