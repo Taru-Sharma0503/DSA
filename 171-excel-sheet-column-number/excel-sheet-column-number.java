@@ -1,11 +1,9 @@
 class Solution {
     public int titleToNumber(String columnTitle) {
-        int result = 0;
-
-        for (char ch : columnTitle.toCharArray()) {
-            result = result * 26 + (ch - 'A' + 1);
+        int sum=0;
+        for(int i=0;i<columnTitle.length();i++){
+            sum=(sum*26)+(columnTitle.charAt(i)-'A'+1);
         }
-
-        return result;
+        return sum;
     }
 }
