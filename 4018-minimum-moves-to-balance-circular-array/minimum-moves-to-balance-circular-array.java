@@ -21,15 +21,21 @@ class Solution {
         int right = (idx + 1) % n;
         int dist = 1;
 
-        while (deficit > 0 && dist < n) {
-            long available = balance[left];
+        while (deficit > 0 && dist <= n / 2) {
+            if (left == right) {
+                long take = Math.min(deficit, Math.max(0L, balance[left]));
+                operations += take * dist;
+                deficit -= take;
+                break;
+            }
 
-            if (left != right)
-                available += balance[right];
+            long takeLeft = Math.min(deficit, Math.max(0L, balance[left]));
+            operations += takeLeft * dist;
+            deficit -= takeLeft;
 
-            long take = Math.min(deficit, available);
-            operations += take * dist;
-            deficit -= take;
+            long takeRight = Math.min(deficit, Math.max(0L, balance[right]));
+            operations += takeRight * dist;
+            deficit -= takeRight;
 
             left = (left - 1 + n) % n;
             right = (right + 1) % n;
