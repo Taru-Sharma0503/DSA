@@ -1,42 +1,52 @@
 class Solution {
     public String reverseStr(String s, int k) {
-        StringBuilder ans = new StringBuilder();
+        char[] arr = s.toCharArray();
+        char[] ans = new char[arr.length];
+
         boolean reverse = true;
-        int idx = 0, len = s.length();
+        int idx = 0, len = s.length(), pos = 0;
 
         while (idx < len) {
             if (reverse) {
-                String reversed = reverse(s, idx, idx + k - 1);
-                ans.append(reversed);
+                char[] reversed = reverse(arr, idx, idx + k - 1);
+                for (char ch : reversed)
+                    ans[pos++] = ch;
             } else {
-                String notReversed = noreverse(s, idx, idx + k - 1);
-                ans.append(notReversed);
+                char[] notReversed = noreverse(arr, idx, idx + k - 1);
+                for (char ch : notReversed)
+                    ans[pos++] = ch;
             }
+
             reverse = !reverse;
             idx = idx + k;
         }
 
-        return ans.toString();
+        return new String(ans);
     }
 
-    public String reverse(String s, int i, int j) {
-        if (j >= s.length())
-            j = s.length() - 1;
+    public char[] reverse(char[] arr, int i, int j) {
+        if (j >= arr.length)
+            j = arr.length - 1;
 
-        StringBuilder reversed = new StringBuilder();
+        char[] reversed = new char[j - i + 1];
 
+        int pos = 0;
         for (int idx = j; idx >= i; idx--)
-            reversed.append(s.charAt(idx));
+            reversed[pos++] = arr[idx];
 
-        return reversed.toString();
+        return reversed;
     }
 
-    public String noreverse(String s, int i, int j) {
-        StringBuilder notreversed = new StringBuilder();
+    public char[] noreverse(char[] arr, int i, int j) {
+        if (j >= arr.length)
+            j = arr.length - 1;
 
-        for (int idx = i; idx <= j && idx < s.length(); idx++)
-            notreversed.append(s.charAt(idx));
+        char[] notreversed = new char[j - i + 1];
 
-        return notreversed.toString();
+        int pos = 0;
+        for (int idx = i; idx <= j; idx++)
+            notreversed[pos++] = arr[idx];
+
+        return notreversed;
     }
 }
