@@ -1,34 +1,59 @@
 class Solution {
     public int numIslands(char[][] grid) {
         int m = grid.length, n = grid[0].length;
-        int components=0;
-        int visited[][] = new int[m][n];
+        int parent[] = new int[m * n];
+        int size[] = new int[m * n];
+
+        for (int i = 0; i < m * n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+
+        int islands = 0;
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1' && visited[i][j] == 0) {
-                    dfs(grid, i, j, visited);
-                    components++;
+                if (grid[i][j] == '0')
+                    continue;
+
+                islands++;
+                int idx = i * n + j;
+                if (i > 0 && grid[i - 1][j] == '1') {
+                    if (union(grid, idx, (i - 1) * n + j, parent, size))
+                        islands--;
+                }
+
+                if (j > 0 && grid[i][j - 1] == '1') {
+                    if (union(grid, idx, (i) * n + (j - 1), parent, size))
+                        islands--;
                 }
             }
         }
 
-        return components;
+        return islands;
     }
 
-    public void dfs(char[][] grid, int i, int j, int[][] visited) {
-        visited[i][j] = 1;
+    public boolean union(char[][] grid, int a, int b, int parent[], int[] size) {
+        int rootA = find(a, parent);
+        int rootB = find(b, parent);
 
-        if (i > 0 && grid[i - 1][j] == '1' && visited[i - 1][j] == 0)
-            dfs(grid, i - 1, j, visited);
+        if (rootA == rootB)
+            return false;
 
-        if (j > 0 && grid[i][j - 1] == '1' && visited[i][j - 1] == 0)
-            dfs(grid, i, j - 1, visited);
+        if (size[rootA] <= size[rootB]) {
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
+        } else {
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
+        }
 
-        if (i < grid.length - 1 && grid[i + 1][j] == '1' && visited[i + 1][j] == 0)
-            dfs(grid, i + 1, j, visited);
+        return true;
+    }
 
-        if (j < grid[0].length - 1 && grid[i][j + 1] == '1' && visited[i][j + 1] == 0)
-            dfs(grid, i, j + 1, visited);
+    public int find(int i, int[] parent) {
+        if (parent[i] != i)
+            parent[i] = find(parent[i], parent);
+        return parent[i];
     }
 }
