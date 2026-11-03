@@ -1,38 +1,50 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
-        int m = isConnected.length, n = isConnected[0].length, ans = 0;
-        List<Integer> graph[] = new ArrayList[m];
-        boolean visited[] = new boolean[m];
+        int n = isConnected.length;
+        int[] parent = new int[n + 1];
+        int[] size = new int[n + 1];
+        int components = n;
 
-        for (int i = 0; i < m; i++)
-            graph[i] = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
 
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (j == i)
-                    continue;
-                if (isConnected[i][j] == 1)
-                    graph[i].add(j);
+                if (isConnected[i][j] == 1) {
+                    if (union(isConnected, i, j, parent, size)) {
+                        components--;
+                    }
+                }
             }
         }
 
-        for (int i = 0; i < m; i++) {
-            if (visited[i])
-                continue;
-
-            dfs(i, graph, visited);
-            ans++;
-        }
-
-        return ans;
+        return components;
     }
 
-    public void dfs(int node, List<Integer> graph[], boolean visited[]) {
-        visited[node] = true;
+    public boolean union(int[][] isConnected, int a, int b, int[] parent, int[] size) {
+        int rootA = find(a, parent);
+        int rootB = find(b, parent);
 
-        for (int nbr : graph[node]) {
-            if (!visited[nbr])
-                dfs(nbr, graph, visited);
+        if (rootA == rootB)
+            return false;
+
+        if (size[rootA] <= size[rootB]) {
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
+        } else {
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
         }
+
+        return true;
+    }
+
+    public int find(int i, int[] parent) {
+        if (parent[i] != i)
+            parent[i] = find(parent[i], parent);
+
+        return parent[i];
     }
 }
