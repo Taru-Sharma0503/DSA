@@ -44,22 +44,4 @@ class Solution {
 
         return ans;
     }
-
-    public boolean appearsBefore(List<Integer> order, int u, int v) {
-        boolean ufound = false;
-
-        for (int num : order) {
-            if (num == u) {
-                ufound = true;
-            }
-            if (num == v) {
-                if (ufound)
-                    return true;
-                else
-                    return false;
-            }
-        }
-
-        return false;
-    }
 }
