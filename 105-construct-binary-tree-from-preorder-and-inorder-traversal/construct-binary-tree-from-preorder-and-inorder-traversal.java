@@ -1,35 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
-
     HashMap<Integer, Integer> map = new HashMap<>();
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-
-        for (int i = 0; i < inorder.length; i++)
+        for (int i = 0; i <= inorder.length - 1; i++)
             map.put(inorder[i], i);
 
-        return buildSubtree(preorder, 0, preorder.length - 1,
-                inorder, 0, inorder.length - 1);
+        return buildSubTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
     }
 
-    public TreeNode buildSubtree(int[] preorder, int preStart, int preEnd,
-                                 int[] inorder, int inStart, int inEnd) {
-
-        if (preStart > preEnd)
+    public TreeNode buildSubTree(int[] preorder, int prestart, int preend, int[] inorder, int instart, int inend) {
+        if (prestart > preend || instart > inend)
             return null;
 
-        TreeNode node = new TreeNode(preorder[preStart]);
+        TreeNode node = new TreeNode(preorder[prestart]);
 
-        int idx = map.get(node.val);
+        int idx = map.get(preorder[prestart]);
+        int leftSubtreeSize = idx - instart;
 
-        int leftSubtreeSize = idx - inStart;
+        node.left = buildSubTree(preorder, prestart + 1, prestart + leftSubtreeSize, inorder, instart,
+                idx - 1);
 
-        node.left = buildSubtree(
-                preorder, preStart + 1, preStart + leftSubtreeSize,
-                inorder, inStart, idx - 1);
-
-        node.right = buildSubtree(
-                preorder, preStart + leftSubtreeSize + 1, preEnd,
-                inorder, idx + 1, inEnd);
+        node.right = buildSubTree(preorder, prestart + leftSubtreeSize + 1, preend, inorder, idx + 1, inend);
 
         return node;
     }
