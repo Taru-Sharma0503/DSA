@@ -21,12 +21,15 @@ class Solution {
         return diameter;
     }
 
-    public int height(TreeNode root) {
-        if (root == null)
+    public int height(TreeNode node) {
+        if (node == null)
             return 0;
-        int leftHeight = height(root.left);
-        int rightHeight = height(root.right);
-        diameter = Math.max(diameter, leftHeight + rightHeight);
+        int leftHeight = height(node.left);
+        int rightHeight = height(node.right);
+
+        if (leftHeight + rightHeight > diameter)
+            diameter = leftHeight + rightHeight;
+
         return 1 + Math.max(leftHeight, rightHeight);
     }
 }
